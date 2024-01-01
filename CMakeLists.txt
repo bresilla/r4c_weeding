@@ -30,7 +30,9 @@ find_package(message_filters REQUIRED)
 find_package(pcl_ros REQUIRED)
 find_package(pcl_conversions REQUIRED)
 find_package(cv_bridge REQUIRED)
+find_package(image_geometry REQUIRED)
 find_package(farmbot_interfaces REQUIRED)
+find_package(vision_interfaces REQUIRED)
 
 add_executable(detection_blob src/detection_blob.cpp)
 ament_target_dependencies(detection_blob
@@ -46,7 +48,28 @@ ament_target_dependencies(detection_blob
   pcl_ros
   pcl_conversions
   cv_bridge
+  image_geometry
   farmbot_interfaces
+  vision_interfaces
+)
+
+add_executable(detection_track src/detection_track.cpp)
+ament_target_dependencies(detection_track
+  rclcpp 
+  std_msgs
+  std_srvs
+  nav_msgs
+  geometry_msgs
+  sensor_msgs
+  tf2
+  tf2_ros
+  message_filters
+  pcl_ros
+  pcl_conversions
+  cv_bridge
+  image_geometry
+  farmbot_interfaces
+  vision_interfaces
 )
 
 find_package(OpenCV REQUIRED)
@@ -67,8 +90,15 @@ target_link_libraries(detection_blob
   ${OpenCV_LIBRARIES}
 )
 
+target_link_libraries(detection_track
+  fmt::fmt
+  ${PCL_LIBRARIES}
+  ${Eigen_LIBRARIES}
+  ${OpenCV_LIBRARIES}
+)
+
 install(TARGETS
-detection_blob
+detection_blob detection_track
   DESTINATION lib/${PROJECT_NAME}
 )
 

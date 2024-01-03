@@ -142,7 +142,7 @@ class DetectTracker : public rclcpp::Node {
                 if (moments.m00 != 0) {
                     int x = static_cast<int>(moments.m10 / moments.m00);
                     int y = static_cast<int>(moments.m01 / moments.m00);
-                    // if (y < 0.5 * height) { continue;}
+                    if (y < 0.5 * height) { continue;}
 
                     vision_interfaces::msg::Detection detection;
                     cv::Rect2d rect = cv::boundingRect(e);
